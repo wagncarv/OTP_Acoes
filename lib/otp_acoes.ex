@@ -3,12 +3,12 @@ defmodule OtpAcoes do
 
   def init(init_arg), do: {:ok, init_arg}
 
-  def start_link(code, value) do
-    GenServer.start_link(__MODULE__, [create(value)], name: code)
+  def start_link(code, l, value) do
+    GenServer.start_link(__MODULE__, [create(value)], name: via(code, l))
   end
 
-  def get(code), do: GenServer.call(code, :get)
-  def up(code, value), do: GenServer.cast(code, {:up, value})
+  def get(code, l), do: GenServer.call(via(code, l), :get)
+  def up(code, l, value), do: GenServer.cast(via(code, l), {:up, value})
 
   def create(value), do: {value, DateTime.utc_now()}
 
@@ -20,4 +20,6 @@ defmodule OtpAcoes do
     {value, _} = state |> hd()
     {:noreply, [create(v + value) | state]}
   end
+
+  def via(code, l), do: {:via, Registry, {l, code}}
 end
