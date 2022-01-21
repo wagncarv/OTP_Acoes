@@ -8,6 +8,3 @@ defmodule OtpAcoes do
   def update(code, l, v), do: Server.up(code, l, v)
 end
 
-# OtpAcoes.start_link "bova11", :bova, 45
-# OtpAcoes.get "bova11", :bova
-# OtpAcoes.up "bova11", :bova, 2
